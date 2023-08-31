@@ -295,7 +295,7 @@ class Spacetimeformer_Forecaster(stf.Forecaster):
             return forecast_output, recon_output, (logits, labels), attn
         return forecast_output, recon_output, (logits, labels)
 
-    def validation_epoch_end(self, outs):
+    def on_validation_epoch_end(self, outs):
         total = 0
         count = 0
         for dict_ in outs:
