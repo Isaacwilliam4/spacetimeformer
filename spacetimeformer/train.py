@@ -10,6 +10,9 @@ import torch
 import sys
 sys.path.append('..')
 import spacetimeformer as stf
+from spacetimeformer.data import world_trade
+from spacetimeformer.data.world_trade import World_Trade_Data
+
 
 _MODELS = ["spacetimeformer", "mtgnn", "heuristic", "lstm", "lstnet", "linear", "s4"]
 
@@ -53,8 +56,8 @@ def create_parser():
     parser.add_argument("dset")
     
     if dset == "world-trade":
-        stf.data.world_trade.World_Trade_Data.add_cli(parser)
-    if dset == "precip":
+        World_Trade_Data.add_cli(parser)
+    elif dset == "precip":
         stf.data.precip.GeoDset.add_cli(parser)
         stf.data.precip.CONUS_Precip.add_cli(parser)
     elif dset == "metr-la" or dset == "pems-bay":
@@ -398,7 +401,20 @@ def create_dset(config):
     PLOT_VAR_NAMES = None
     PAD_VAL = None
 
-    if config.dset == "metr-la" or config.dset == "pems-bay":
+    if config.dset == "world-trade":
+        data = World_Trade_Data(config.data_path)
+        DATA_MODULE = stf.data.DataModule(
+            datasetCls=world_trade.World_Trade_Torch,
+            dataset_kwargs={"data": data},
+            batch_size=config.batch_size,
+            workers=config.workers,
+            overfit=args.overfit
+        )
+
+        INV_SCALER = data.inverse_scale
+        SCALER = data.scale
+        NULL_VAL = 0.0
+    elif config.dset == "metr-la" or config.dset == "pems-bay":
         if config.dset == "pems-bay":
             assert (
                 "pems_bay" in config.data_path
