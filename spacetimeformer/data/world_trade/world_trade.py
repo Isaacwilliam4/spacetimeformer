@@ -10,26 +10,56 @@ class World_Trade_Data:
         df = pd.read_csv(self.path)
         df = df.drop(columns='exp-imp')
         df = df[(df != 0).any(axis=1)]
-        x = df.columns[1:]
-        df_np = df.to_numpy()
-        df_np = df_np[:, 1:]
-        df_np = df_np.transpose()
+
+        # x = df.columns[1:]
+        # df_np = df.to_numpy()
+        # df_np = df_np[:, 1:]
+        # df_np = df_np.transpose()
+        df_tuples = [(int(col), df[col].tolist()) for col in df.columns]
+        rng = [0,0]
 
         if split == 'train':
-            return x[:20], df_np[:20]
+            rng[0] = 0
+            rng[1] = 18
+
         elif split == 'val':
-            return x[20:23], df_np[21:24]
+            rng[0] = 18
+            rng[1] = 22
+
         elif split == 'test':
-            return x[23:26], df_np[23:26]
+            rng[0] = 22
+            rng[1] = 26
+
+        x = []
+        y = []
+        i = rng[0]
+        while i+4 <= rng[1]:
+            x.append(df_tuples[i:i+3])
+            y.append(df_tuples[i+3])
+            i += 1
+
+        return x, y
+
+        
 
     def _split_set(self, data):
         x = []
         y = []
-        i = 0
-        while i+4 < len(data):
-            x.append(data[i:i+3])
-            y.append(data[i+3])
-            i += 1
+        
+        #d = (year, data) or [(year, data)...]
+        for d in data:
+            if isinstance(d[0], tuple):
+                x_v = []
+                y_v = []
+                for year in d:
+                    x_v.append(year[0])
+                    y_v.append(year[1])
+                x.append(x_v)
+                y.append(y_v)
+            else:
+                x.append(d[0])
+                y.append(d[1])
+
 
         return np.array(x), np.array(y)
 
@@ -49,7 +79,7 @@ class World_Trade_Data:
         x_c_test, y_c_test = self._split_set(context_test)
         x_t_test, y_t_test = self._split_set(target_test)
 
-        self.scale_max = y_c_train.max((0, 1))
+        self.scale_max = y_c_train.max((0,1))
 
         y_c_train = self.scale(y_c_train)
         y_t_train = self.scale(y_t_train)
@@ -72,13 +102,13 @@ class World_Trade_Data:
 
     @classmethod
     def add_cli(self, parser):
-        parser.add_argument("--data_path", type=str, default="./data/metr_la/")
-        parser.add_argument("--context_points", type=int, default=12)
+        parser.add_argument("--data_path", type=str, default="./data/world_trade/")
+        parser.add_argument("--context_points", type=int, default=3)
 
-        parser.add_argument("--target_points", type=int, default=12)
+        parser.add_argument("--target_points", type=int, default=1)
 
 
-def METR_LA_Torch(data: World_Trade_Data, split: str):
+def World_Trade_Torch(data: World_Trade_Data, split: str):
     assert split in ["train", "val", "test"]
     if split == "train":
         tensors = data.train_data
@@ -92,5 +122,5 @@ def METR_LA_Torch(data: World_Trade_Data, split: str):
 
 if __name__ == "__main__":
     data = World_Trade_Data(path=os.path.abspath('./spacetimeformer/data/world_trade/tomato_ts_df.csv'))
-    dset = METR_LA_Torch(data, "test")
+    dset = World_Trade_Torch(data, "test")
     breakpoint()

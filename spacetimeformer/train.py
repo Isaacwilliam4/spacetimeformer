@@ -51,7 +51,9 @@ def create_parser():
     parser = ArgumentParser()
     parser.add_argument("model")
     parser.add_argument("dset")
-
+    
+    if dset == "world-trade":
+        stf.data.world_trade.World_Trade_Data.add_cli(parser)
     if dset == "precip":
         stf.data.precip.GeoDset.add_cli(parser)
         stf.data.precip.CONUS_Precip.add_cli(parser)
@@ -126,8 +128,8 @@ def create_model(config):
 
     if config.dset == 'world-trade':
         x_dim = 1
-        yc_dim = 303
-        yt_dim = 303
+        yc_dim = 3
+        yt_dim = 1
     elif config.dset == "metr-la":
         x_dim = 2
         yc_dim = 207
