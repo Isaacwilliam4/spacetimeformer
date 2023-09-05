@@ -8,7 +8,7 @@ import uuid
 import pytorch_lightning as pl
 import torch
 import sys
-sys.path.append('..')
+sys.path.append('../spacetimeformer')
 import spacetimeformer as stf
 from spacetimeformer.data import world_trade
 from spacetimeformer.data.world_trade import World_Trade_Data

@@ -193,7 +193,8 @@ class Forecaster(pl.LightningModule, ABC):
         **forward_kwargs,
     ) -> Tuple[torch.Tensor]:
         x_c, y_c, x_t, y_t = self.nan_to_num(x_c, y_c, x_t, y_t)
-        _, pred_len, d_yt = y_t.shape
+        # _, pred_len, d_yt = y_t.shape
+        pred_len, d_yt = y_t.shape
 
         y_c = self.revin(y_c, mode="norm")  # does nothing if use_revin = False
 
