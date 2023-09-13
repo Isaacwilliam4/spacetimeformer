@@ -808,6 +808,7 @@ def main(args):
 
     # Callbacks
     callbacks = create_callbacks(args, save_dir=log_dir)
+    #TODO: Figure out why test_samples has infinite values and NaN
     test_samples = next(iter(data_module.test_dataloader()))
 
     if args.wandb and args.plot:

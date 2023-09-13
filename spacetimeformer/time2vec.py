@@ -21,6 +21,7 @@ class Time2Vec(nn.Module):
     def forward(self, x):
         if self.enabled:
             x = torch.diag_embed(x)
+            # x = x.view(-1, 1)
             # x.shape = (bs, sequence_length, input_dim, input_dim)
             x_affine = torch.matmul(x, self.embed_weight) + self.embed_bias
             # x_affine.shape = (bs, sequence_length, input_dim, time_embed_dim)

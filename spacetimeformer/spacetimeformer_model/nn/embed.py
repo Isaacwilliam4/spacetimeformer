@@ -177,6 +177,9 @@ class Embedding(nn.Module):
         if not self.use_time:
             x = torch.zeros_like(x)
         x = torch.nan_to_num(x)
+        #TODO: line below added by me
+        # x = x.reshape(1, x.shape[0], x.shape[1])
+        x = x.unsqueeze(0)
         x = repeat(x, f"batch len x_dim -> batch ({dy} len) x_dim")
         time_emb = self.time_emb(x)
 
