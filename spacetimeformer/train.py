@@ -8,13 +8,14 @@ import uuid
 import pytorch_lightning as pl
 import torch
 import sys
+# print(sys.path)
 sys.path.append('../spacetimeformer')
 import spacetimeformer as stf
 from spacetimeformer.data import world_trade
 from spacetimeformer.data.world_trade import World_Trade_Data
 
-
 _MODELS = ["spacetimeformer", "mtgnn", "heuristic", "lstm", "lstnet", "linear", "s4"]
+
 
 
 _DSETS = [
