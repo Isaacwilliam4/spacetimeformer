@@ -1,0 +1,13 @@
+Directions for Setup
+
+
+git clone https://github.com/QData/spacetimeformer.git
+cd spacetimeformer
+conda create -n spacetimeformer python==3.8
+pip install torch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 -f https://download.pytorch.org/whl/torch_stable.html
+conda activate spacetimeformer
+pip install -r requirements.txt
+pip install -e
+
+#test command for linear model
+python train.py linear toy2 --context_points 288 --target_points 96 --run_name linear_toy2_regression --use_seasonal_decomp --linear_window 288 --data_path ./data/toy_dset2.csv
