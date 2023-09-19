@@ -11,8 +11,6 @@ import sys
 # print(sys.path)
 sys.path.append('../spacetimeformer')
 import spacetimeformer as stf
-from spacetimeformer.data import world_trade
-from spacetimeformer.data.world_trade import World_Trade_Data
 
 _MODELS = ["spacetimeformer", "mtgnn", "heuristic", "lstm", "lstnet", "linear", "s4"]
 
@@ -57,7 +55,7 @@ def create_parser():
     parser.add_argument("dset")
     
     if dset == "world-trade":
-        World_Trade_Data.add_cli(parser)
+        stf.data.world_trade.World_Trade_Data.add_cli(parser)
     elif dset == "precip":
         stf.data.precip.GeoDset.add_cli(parser)
         stf.data.precip.CONUS_Precip.add_cli(parser)

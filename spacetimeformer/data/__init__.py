@@ -11,3 +11,4 @@ from . import m4
 from . import wiki
 from . import monash
 from . import metro
+from . import world_trade
