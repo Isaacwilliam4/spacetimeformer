@@ -1,0 +1,1 @@
+train.py linear world-trade --run_name world_trade_linear --data_path "C:\Users\isaac\research\IdeaLabs\spacetimeformer\spacetimeformer\data\world_trade"
