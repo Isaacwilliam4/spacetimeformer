@@ -14,6 +14,6 @@ python train.py linear toy2 --context_points 288 --target_points 96 --run_name l
 
 
 #test command for world trade data
-python train.py linear world-trade --run_name world_trade_linear --data_path "C:\Users\isaac\research\IdeaLabs\spacetimeformer\spacetimeformer\data\world_trade"
+python train.py linear world-trade --run_name world_trade_linear --data_path "C:\Users\isaac\research\IdeaLabs\spacetimeformer\spacetimeformer\data\world_trade\tomato_ts_df.csv"
 
  

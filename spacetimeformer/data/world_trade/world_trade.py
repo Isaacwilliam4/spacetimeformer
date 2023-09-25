@@ -10,6 +10,7 @@ class World_Trade_Data:
         df = pd.read_csv(self.path)
         df = df.drop(columns='exp-imp')
         df = df[(df != 0).any(axis=1)]
+        df.to_csv('./tomato_ts_df2.csv')
 
         # x = df.columns[1:]
         # df_np = df.to_numpy()

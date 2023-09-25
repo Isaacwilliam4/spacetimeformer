@@ -49,6 +49,10 @@ class Linear_Forecaster(stf.Forecaster):
         return {}
 
     def forward_model_pass(self, x_c, y_c, x_t, y_t):
+        if y_t.ndim < 3:
+            y_t = y_t.view(1, y_t.shape[0], y_t.shape[1])
+        if y_c.ndim < 3:
+            y_c = y_c.view(1, y_c.shape[0], y_c.shape[1])
         _, pred_len, d_yt = y_t.shape
         output = self.model(y_c, pred_len=pred_len, d_yt=d_yt)
         return (output,)
