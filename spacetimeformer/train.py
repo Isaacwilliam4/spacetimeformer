@@ -18,14 +18,6 @@ import spacetimeformer as stf
 class World_Trade_Data:
     def _read(self, split):
         df = pd.read_csv(self.path)
-        df = df.drop(columns='exp-imp')
-        df = df[(df != 0).any(axis=1)]
-        df.to_csv('./tomato_ts_df2.csv', index=False)
-
-        # x = df.columns[1:]
-        # df_np = df.to_numpy()
-        # df_np = df_np[:, 1:]
-        # df_np = df_np.transpose()
         df_tuples = [(int(col), df[col].tolist()) for col in df.columns]
         rng = [0,0]
 
@@ -90,7 +82,7 @@ class World_Trade_Data:
         x_c_test, y_c_test = self._split_set(context_test)
         x_t_test, y_t_test = self._split_set(target_test)
 
-        self.scale_max = y_c_train.max((0,1))
+        self.scale_max = y_c_train.max()
 
         y_c_train = self.scale(y_c_train)
         y_t_train = self.scale(y_t_train)
@@ -236,6 +228,7 @@ def create_parser():
     parser.add_argument(
         "--trials", type=int, default=1, help="How many consecutive trials to run"
     )
+    parser.add_argument("--num_epochs", type=int, default=100, help="how many epochs to run")
 
     if len(sys.argv) > 3 and sys.argv[3] == "-h":
         parser.print_help()
@@ -249,8 +242,8 @@ def create_model(config):
 
     if config.dset == 'world-trade':
         x_dim = 1
-        yc_dim = 3
-        yt_dim = 1
+        yc_dim = 6903
+        yt_dim = 6903
     elif config.dset == "metr-la":
         x_dim = 2
         yc_dim = 207
@@ -486,6 +479,7 @@ def create_model(config):
             use_revin=config.use_revin,
             use_seasonal_decomp=config.use_seasonal_decomp,
         )
+        print(forecaster)
     elif config.model == "s4":
         forecaster = stf.s4_model.S4_Forecaster(
             context_points=config.context_points,
@@ -987,7 +981,9 @@ def main(args):
         accumulate_grad_batches=args.accumulate,
         sync_batchnorm=True,
         limit_val_batches=args.limit_val_batches,
+        log_every_n_steps=1,
         **val_control,
+        max_epochs=args.num_epochs
     )
 
     # Train

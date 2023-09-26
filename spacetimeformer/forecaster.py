@@ -194,7 +194,9 @@ class Forecaster(pl.LightningModule, ABC):
     ) -> Tuple[torch.Tensor]:
         x_c, y_c, x_t, y_t = self.nan_to_num(x_c, y_c, x_t, y_t)
         # _, pred_len, d_yt = y_t.shape
-        pred_len, d_yt = y_t.shape
+        if y_t.ndim < 3:
+            y_t = y_t.view(1,y_t.shape[0],y_t.shape[1])
+        _, pred_len, d_yt = y_t.shape
 
         y_c = self.revin(y_c, mode="norm")  # does nothing if use_revin = False
 

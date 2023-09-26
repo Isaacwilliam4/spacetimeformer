@@ -1,0 +1,12 @@
+d_x: 6
+d_yc: 20
+d_yt: 20
+learning_rate: 0.0001
+l2_coeff: 1.0e-06
+loss: mse
+linear_window: 0
+linear_shared_weights: false
+use_revin: false
+use_seasonal_decomp: false
+verbose: true
+context_points: 128
