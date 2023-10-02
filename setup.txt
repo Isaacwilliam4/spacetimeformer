@@ -9,6 +9,19 @@ pip install torch==1.13.0+cu117 torchvision==0.14.0+cu117 torchaudio==0.13.0 --i
 pip install -r requirements.txt
 pip install -e .
 
+#setup for vm
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+source ~/.bashrc
+conda --version
+git clone -b world-trade https://github.com/Isaacwilliam4/spacetimeformer.git
+cd spacetimeformer
+conda create -n spacetimeformer python==3.8
+conda activate spacetimeformer
+pip install torch==1.13.0+cu117 torchvision==0.14.0+cu117 torchaudio==0.13.0 --index-url https://download.pytorch.org/whl/cu117
+pip install -r requirements.txt
+pip install -e .
+
 #test command for linear model
 python train.py linear toy2 --context_points 288 --target_points 96 --run_name linear_toy2_regression --use_seasonal_decomp --linear_window 288 --data_path ./data/toy_dset2.csv
 
