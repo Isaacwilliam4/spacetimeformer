@@ -7,13 +7,19 @@ conda create -n spacetimeformer python==3.8
 pip install torch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 -f https://download.pytorch.org/whl/torch_stable.html
 conda activate spacetimeformer
 pip install -r requirements.txt
-pip install -e
+pip install -e .
 
 #test command for linear model
-python train.py linear toy2 --context_points 288 --target_points 96 --run_name linear_toy2_regression --use_seasonal_decomp --linear_window 288 --data_path ./data/toy_dset2.csv
+python train.py linear toy2 --context_points 288 --target_points 96 --run_name linear_toy2_regression --use_seasonal_decomp --linear_window 288 --data_path ./data/toy_dset2.csv --num_epochs 2
 
 
 #test command for world trade data
 python train.py linear world-trade --run_name world_trade_linear --data_path "C:\Users\isaac\research\IdeaLabs\spacetimeformer\spacetimeformer\data\world_trade\tomato_ts_df.csv" --workers 1 --no_earlystopping --num_epochs 5
 
- 
+#test command with wandb
+
+STF_WANDB_ACCT="isaacwilliam4"
+STF_WANDB_PROJ="graph_evolution"
+export STF_WANDB_ACCT
+export STF_WANDB_PROJ
+python train.py linear world-trade --run_name world_trade_linear --data_path "C:\Users\isaac\research\IdeaLabs\spacetimeformer\spacetimeformer\data\world_trade\tomato_ts_df.csv" --workers 1 --no_earlystopping --num_epochs 5 --wandb

@@ -46,4 +46,4 @@ checkpoints/
 *.swp
 
 .vscode
-*.csv
+# *.csv
