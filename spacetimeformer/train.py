@@ -971,10 +971,10 @@ def main(args):
         val_control = {"check_val_every_n_epoch": int(args.val_check_interval)}
 
     trainer = pl.Trainer(
-        # gpus=args.gpus,
+        gpus=args.gpus,
         callbacks=callbacks,
         logger=logger if args.wandb else None,
-        accelerator="cpu",
+        accelerator="cuda" if torch.cuda.is_available() else "cpu",
         gradient_clip_val=args.grad_clip_norm,
         gradient_clip_algorithm="norm",
         overfit_batches=20 if args.debug else 0,
