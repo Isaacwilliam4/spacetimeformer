@@ -972,21 +972,41 @@ def main(args):
     else:
         val_control = {"check_val_every_n_epoch": int(args.val_check_interval)}
 
-    trainer = pl.Trainer(
-        # gpus=args.gpus,
-        callbacks=callbacks,
-        logger=logger if args.wandb else None,
-        accelerator="cuda" if torch.cuda.is_available() else "cpu",
-        gradient_clip_val=args.grad_clip_norm,
-        gradient_clip_algorithm="norm",
-        overfit_batches=20 if args.debug else 0,
-        accumulate_grad_batches=args.accumulate,
-        sync_batchnorm=True,
-        limit_val_batches=args.limit_val_batches,
-        log_every_n_steps=1,
-        **val_control,
-        max_epochs=args.num_epochs
-    )
+    cuda_available = torch.cuda.is_available()
+
+    if cuda_available:
+
+        trainer = pl.Trainer(
+            gpus=args.gpus,
+            callbacks=callbacks,
+            logger=logger if args.wandb else None,
+            accelerator="cuda" if torch.cuda.is_available() else "cpu",
+            gradient_clip_val=args.grad_clip_norm,
+            gradient_clip_algorithm="norm",
+            overfit_batches=20 if args.debug else 0,
+            accumulate_grad_batches=args.accumulate,
+            sync_batchnorm=True,
+            limit_val_batches=args.limit_val_batches,
+            log_every_n_steps=1,
+            **val_control,
+            max_epochs=args.num_epochs
+        )
+    else:
+        trainer = pl.Trainer(
+            callbacks=callbacks,
+            logger=logger if args.wandb else None,
+            accelerator="cuda" if torch.cuda.is_available() else "cpu",
+            gradient_clip_val=args.grad_clip_norm,
+            gradient_clip_algorithm="norm",
+            overfit_batches=20 if args.debug else 0,
+            accumulate_grad_batches=args.accumulate,
+            sync_batchnorm=True,
+            limit_val_batches=args.limit_val_batches,
+            log_every_n_steps=1,
+            **val_control,
+            max_epochs=args.num_epochs
+        )
+
 
     # Train
     trainer.fit(forecaster, datamodule=data_module)
