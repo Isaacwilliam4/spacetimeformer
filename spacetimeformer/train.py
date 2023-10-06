@@ -18,6 +18,7 @@ import spacetimeformer as stf
 class World_Trade_Data:
     def _read(self, split):
         df = pd.read_csv(self.path)
+        #convert the df to a tuple where tuple[0] is the year, and tuple[1] is the values
         df_tuples = [(int(col), df[col].tolist()) for col in df.columns]
         rng = [0,0]
 
@@ -55,7 +56,7 @@ class World_Trade_Data:
                 x_v = []
                 y_v = []
                 for year in d:
-                    x_v.append(year[0])
+                    x_v.append([year[0]])
                     y_v.append(year[1])
                 x.append(x_v)
                 y.append(y_v)
@@ -63,8 +64,9 @@ class World_Trade_Data:
                 x.append(d[0])
                 y.append(d[1])
 
-
-        return np.array(x), np.array(y)
+        x = np.array(x)
+        y = np.array(y)
+        return x,y
 
     def __init__(self, path):
         self.path = path
@@ -971,7 +973,7 @@ def main(args):
         val_control = {"check_val_every_n_epoch": int(args.val_check_interval)}
 
     trainer = pl.Trainer(
-        gpus=args.gpus,
+        # gpus=args.gpus,
         callbacks=callbacks,
         logger=logger if args.wandb else None,
         accelerator="cuda" if torch.cuda.is_available() else "cpu",

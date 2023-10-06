@@ -62,6 +62,7 @@ class LSTM_Seq2Seq(nn.Module):
     def _merge(self, x, y):
         return torch.cat((x, y), dim=-1)
 
+
     def forward(
         self,
         x_context,

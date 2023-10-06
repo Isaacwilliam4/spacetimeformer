@@ -1,11 +1,20 @@
 Directions for Setup
 
-
+#with gpu
 git clone -b world-trade https://github.com/Isaacwilliam4/spacetimeformer.git
 cd spacetimeformer
 conda create -n spacetimeformer python==3.8
 conda activate spacetimeformer
 pip install torch==1.13.0+cu117 torchvision==0.14.0+cu117 torchaudio==0.13.0 --index-url https://download.pytorch.org/whl/cu117
+pip install -r requirements.txt
+pip install -e .
+
+#with cpu
+git clone -b world-trade https://github.com/Isaacwilliam4/spacetimeformer.git
+cd spacetimeformer
+conda create -n spacetimeformer python==3.8
+conda activate spacetimeformer
+pip install torch==1.13.0 torchvision==0.14.0 torchaudio==0.13.0 --index-url https://download.pytorch.org/whl/cpu
 pip install -r requirements.txt
 pip install -e .
 
@@ -28,5 +37,7 @@ python train.py linear toy2 --context_points 288 --target_points 96 --run_name l
 
 #test command for world trade data
 python train.py linear world-trade --run_name world_trade_linear --data_path "C:\Users\isaac\research\IdeaLabs\spacetimeformer\spacetimeformer\data\world_trade\tomato_ts_df.csv" --workers 1 --no_earlystopping --num_epochs 5
+python train.py lstm world-trade --run_name world_trade_linear --data_path "C:\Users\isaac\research\IdeaLabs\spacetimeformer\spacetimeformer\data\world_trade\tomato_ts_df.csv" --workers 1 --no_earlystopping --num_epochs 5 --time_emb_dim 3
+
 
  

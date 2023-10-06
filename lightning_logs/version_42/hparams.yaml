@@ -1,0 +1,16 @@
+d_x: 1
+d_yc: 6903
+d_yt: 6903
+learning_rate: 0.0001
+l2_coeff: 1.0e-06
+loss: mse
+linear_window: 0
+linear_shared_weights: false
+use_revin: false
+use_seasonal_decomp: false
+verbose: true
+time_emb_dim: 0
+n_layers: 2
+hidden_dim: 128
+dropout_p: 0.3
+teacher_forcing_prob: 0.8
