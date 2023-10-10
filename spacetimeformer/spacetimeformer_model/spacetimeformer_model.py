@@ -302,7 +302,7 @@ class Spacetimeformer_Forecaster(stf.Forecaster):
             if "forecast_loss" in dict_:
                 total += dict_["forecast_loss"].mean()
                 count += 1
-        avg_val_loss = total / count
+        avg_val_loss = total / count if count != 0 else 1
         # manually tell scheduler it's the end of an epoch to activate
         # ReduceOnPlateau functionality from a step-based scheduler
         self.scheduler.step(avg_val_loss, is_end_epoch=True)
